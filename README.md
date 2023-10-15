@@ -27,7 +27,7 @@ This project is a starting point for a Flutter application.
 ### IOS
 
 - In the upper right hand corner find the combobox which contains the content of "open ios simulator"
-- ![img.png](open-ios-simulator.png)
+- ![img.png](docs/open-ios-simulator.png)
 
 ## Application Entrypoint
 
