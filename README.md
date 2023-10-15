@@ -1,16 +1,16 @@
-# egadun
-
-A new Flutter project.
-
 ## Getting Started
 
 This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+How to integrate this project in your IDE
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Install flutter according to [this documentation](https://docs.flutter.dev/get-started/install/)
+- Install [flutter](https://plugins.jetbrains.com/plugin/9212-flutter) and [dart](https://plugins.jetbrains.com/plugin/6351-dart) plugins for your IDE.
+  - Android Studio is the recommended one.
+- Under "Project Structure" the config should look somehow like this.
+  ![project-structure.png](docs%2Fproject-structure.png)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- go to the [pubspec.yaml](pubspec.yaml) file and click on "flutter doctor" in the upper bar or run the same command on a terminal.
+  - When there are warnings remove them by following the steps.
+- The IDE should not display any errors or warnings in general.
+
