@@ -48,7 +48,6 @@ class _CameraScreenState extends State<CameraScreen> {
             if (snapshot.connectionState == ConnectionState.done) {
               return CameraPreview(
                 _controller,
-                child: const Text("Hello world"),
               );
             } else {
               return const Center(child: CircularProgressIndicator());
