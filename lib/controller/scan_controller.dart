@@ -6,11 +6,15 @@ import 'package:permission_handler/permission_handler.dart';
 class ScanController extends GetxController {
   late CameraController controller;
   var isCameraInit = false.obs;
+  var isObjectFound = false.obs;
   late List<CameraDescription> cameras;
 
   var cameraCount = 0;
 
-  var x, y, w, h = 0.0;
+  var x,
+      y,
+      w,
+      h = 0.0;
   var label = "";
 
   @override
@@ -27,7 +31,9 @@ class ScanController extends GetxController {
   }
 
   initCamera(int cameraIndex) async {
-    if (await Permission.camera.request().isGranted) {
+    if (await Permission.camera
+        .request()
+        .isGranted) {
       cameras = await availableCameras();
       controller = CameraController(
           cameras[cameraIndex], ResolutionPreset.veryHigh,
@@ -69,14 +75,19 @@ class ScanController extends GetxController {
         imageStd: 127.5,
         numResults: 1,
         rotation: 90,
-        threshold: 0.4);
+        threshold: 0.0);
 
     if (detector!.isNotEmpty) {
-      label = "$detector";
-      h = 100.0;
-      w = 200.0;
-      x = 25.0;
-      y = 50.0;
+      if (detector.first["confidence"] * 100 > 50) {
+        label = "$detector";
+        h = 400.0;
+        w = 200.0;
+        x = 25.0;
+        y = 50.0;
+        isObjectFound(true);
+      } else {
+        isObjectFound(false);
+      }
     }
   }
 }

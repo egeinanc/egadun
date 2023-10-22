@@ -16,25 +16,26 @@ class CameraView extends StatelessWidget {
                 ? Stack(
                     children: [
                       CameraPreview(controller.controller),
-                      Positioned(
-                        width: controller.w,
-                        height: controller.h,
-                        top: controller.x,
-                        left: controller.y,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.green, width: 4.0)),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                  color: Colors.white,
-                                  child: Text(controller.label)),
-                            ],
+                      if (controller.isObjectFound.value)
+                        Positioned(
+                          width: controller.w,
+                          height: controller.h,
+                          top: controller.x,
+                          left: controller.y,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.green, width: 4.0)),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                    color: Colors.white,
+                                    child: Text(controller.label)),
+                              ],
+                            ),
                           ),
-                        ),
-                      )
+                        )
                     ],
                   )
                 : const Center(child: Text("Loading..."));
