@@ -33,19 +33,18 @@ class ScanController extends GetxController {
           cameras[cameraIndex], ResolutionPreset.veryHigh,
           enableAudio: false);
 
-      controller.initialize().then((value) {
-        controller.startImageStream((image) {
-          cameraCount++;
-          if (cameraCount % 10 == 0) {
-            cameraCount = 0;
-            objectDetector(image);
-          }
-          update();
-        });
-      });
-      isCameraInit(true);
+      await controller.initialize();
 
-      update();
+      controller.startImageStream((image) {
+        cameraCount++;
+        if (cameraCount % 10 == 0) {
+          cameraCount = 0;
+          objectDetector(image); // todo A resource failed to call destroy.
+        }
+        update();
+      });
+
+      isCameraInit(true);
     } else {
       print("Permission denied");
     }
@@ -73,15 +72,11 @@ class ScanController extends GetxController {
         threshold: 0.4);
 
     if (detector!.isNotEmpty) {
-      var detectedObject = detector.first;
-      if (detectedObject["confidence"] * 100 > 50) {
-        label = "$detector";
-        h = 100.0;
-        w = 200.0;
-        x = 25.0;
-        y = 50.0;
-      }
+      label = "$detector";
+      h = 100.0;
+      w = 200.0;
+      x = 25.0;
+      y = 50.0;
     }
-    update();
   }
 }
