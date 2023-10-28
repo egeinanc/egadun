@@ -11,10 +11,7 @@ class ScanController extends GetxController {
 
   var cameraCount = 0;
 
-  var x,
-      y,
-      w,
-      h = 0.0;
+  var x, y, w, h = 0.0;
   var label = "";
 
   @override
@@ -31,9 +28,7 @@ class ScanController extends GetxController {
   }
 
   initCamera(int cameraIndex) async {
-    if (await Permission.camera
-        .request()
-        .isGranted) {
+    if (await Permission.camera.request().isGranted) {
       cameras = await availableCameras();
       controller = CameraController(
           cameras[cameraIndex], ResolutionPreset.veryHigh,
@@ -78,16 +73,15 @@ class ScanController extends GetxController {
         threshold: 0.0);
 
     if (detector!.isNotEmpty) {
-      if (detector.first["confidence"] * 100 > 50) {
+      var showSquare = detector.first["confidence"] * 100 > 50;
+      if (showSquare) {
         label = "$detector";
         h = 400.0;
         w = 200.0;
         x = 25.0;
         y = 50.0;
-        isObjectFound(true);
-      } else {
-        isObjectFound(false);
       }
+      isObjectFound(showSquare);
     }
   }
 }
