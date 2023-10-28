@@ -40,7 +40,7 @@ class ScanController extends GetxController {
         cameraCount++;
         if (cameraCount % 10 == 0) {
           cameraCount = 0;
-          objectDetector(image); // todo A resource failed to call destroy.
+          runModelOnFrame(image); // todo A resource failed to call destroy.
         }
         update();
       });
@@ -52,14 +52,68 @@ class ScanController extends GetxController {
   }
 
   initTFLite() async {
+    Tflite.close();
     await Tflite.loadModel(
-        model: "assets/model.tflite",
-        labels: "assets/labels.txt",
-        isAsset: true,
-        numThreads: 1,
-        useGpuDelegate: false);
+      model: "assets/yolov2_tiny.tflite",
+      //ssd_mobilenet.tflite, mobilenet_v1.tflite, posenet_mv1_checkpoints.tflite
+      labels: "assets/yolov2_tiny.txt",
+      //ssd_mobilenet.txt, mobilenet_v1.txt
+      //numThreads: 1, // defaults to 1
+      //isAsset: true, // defaults: true, set to false to load resources outside assets
+      //useGpuDelegate: false // defaults: false, use GPU delegate
+    );
   }
 
+  //YOLOv2-Tiny
+  runModelOnFrame(CameraImage image) async {
+    isObjectFound(true);
+
+    var detectedObjects = await Tflite.detectObjectOnFrame(
+        bytesList: image.planes.map((e) => e.bytes).toList(),
+        model: "YOLO",
+        imageHeight: image.height,
+        imageWidth: image.width,
+        numResultsPerClass: 1,
+        threshold: 0.4);
+
+    if (detectedObjects!.isNotEmpty) {
+      var detectedObject = detectedObjects.first;
+
+      var showSquare = detectedObject["confidenceInClass"] * 100 > 1;
+
+      if (showSquare) {
+        label = """
+        ${detectedObject["detectedClass"]}
+${cutDecimals(detectedObject["rect"]["h"] * 100)}
+${cutDecimals(detectedObject["rect"]["w"] * 100)}
+${cutDecimals(detectedObject["rect"]["x"] * 100)}
+${cutDecimals(detectedObject["rect"]["y"] * 100)}
+        
+        
+
+h: ${cutDecimals(detectedObject["rect"]["h"] * 1000)} 
+w: ${cutDecimals(detectedObject["rect"]["w"] * 1000)} 
+x: ${cutDecimals(detectedObject["rect"]["x"] * 1000)} 
+y: ${cutDecimals(detectedObject["rect"]["y"] * 1000)} 
+
+
+width: ${image.width}
+height: ${image.height}
+        """;
+        h = 400.0; // todo irgendwas stimmt mit den werten nicht
+        w = 200.0; // todo irgendwas stimmt mit den werten nicht
+        x = 0.0; // todo irgendwas stimmt mit den werten nicht
+        y = 0.0; // todo irgendwas stimmt mit den werten nicht
+      }
+      isObjectFound(showSquare);
+    }
+  }
+
+  cutDecimals(double d) {
+    return d.toInt();
+  }
+
+  @Deprecated("Replaced by runModelOnFrame()")
   objectDetector(CameraImage image) async {
     var detector = await Tflite.runModelOnFrame(
         bytesList: image.planes.map((e) => e.bytes).toList(),
