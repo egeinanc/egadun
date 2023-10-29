@@ -13,6 +13,7 @@ class ScanController extends GetxController {
 
   var x, y, w, h = 0.0;
   var label = "";
+  var debugLabel = "";
 
   @override
   void onInit() {
@@ -82,19 +83,15 @@ class ScanController extends GetxController {
       var showSquare = detectedObject["confidenceInClass"] * 100 > 1;
 
       if (showSquare) {
-        label = """
-        ${detectedObject["detectedClass"]}
-${cutDecimals(detectedObject["rect"]["h"] * 100)}
-${cutDecimals(detectedObject["rect"]["w"] * 100)}
-${cutDecimals(detectedObject["rect"]["x"] * 100)}
-${cutDecimals(detectedObject["rect"]["y"] * 100)}
-        
-        
+        debugLabel = detectedObject["detectedClass"];
 
-h: ${cutDecimals(detectedObject["rect"]["h"] * 1000)} 
-w: ${cutDecimals(detectedObject["rect"]["w"] * 1000)} 
-x: ${cutDecimals(detectedObject["rect"]["x"] * 1000)} 
-y: ${cutDecimals(detectedObject["rect"]["y"] * 1000)} 
+        label = """
+                        
+
+h: 0,${cutDecimals(detectedObject["rect"]["h"] * 1000)} 
+w: 0,${cutDecimals(detectedObject["rect"]["w"] * 1000)} 
+x: 0,${cutDecimals(detectedObject["rect"]["x"] * 1000)} 
+y: 0,${cutDecimals(detectedObject["rect"]["y"] * 1000)} 
 
 
 width: ${image.width}

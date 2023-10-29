@@ -18,24 +18,30 @@ class CameraView extends StatelessWidget {
                       CameraPreview(controller.controller),
                       if (controller.isObjectFound.value)
                         Positioned(
-                          width: controller.w,
-                          height: controller.h,
-                          top: controller.y,
-                          left: controller.x,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.green, width: 4.0)),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                    color: Colors.white,
-                                    child: Text(controller.label)),
-                              ],
-                            ),
+                            bottom: 0,
+                            child: Container(
+                              color: Colors.white,
+                              child: Text(controller.debugLabel),
+                            )),
+                      Positioned(
+                        width: controller.w,
+                        height: controller.h,
+                        top: controller.y,
+                        left: controller.x,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.green, width: 4.0)),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                  color: Colors.white,
+                                  child: Text(controller.label)),
+                            ],
                           ),
-                        )
+                        ),
+                      )
                     ],
                   )
                 : const Center(child: Text("Loading..."));
