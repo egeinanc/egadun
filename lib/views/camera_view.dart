@@ -8,9 +8,11 @@ class CameraView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: GetBuilder<ScanController>(
-          init: ScanController(),
+          init: ScanController(size),
           builder: (controller) {
             return controller.isCameraInit.value
                 ? Stack(

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:camera/camera.dart';
 import 'package:flutter_tflite/flutter_tflite.dart';
 import 'package:get/get.dart';
@@ -15,6 +17,10 @@ class ScanController extends GetxController {
   var label = "";
   var debugLabel = "";
 
+  late Size size;
+
+  ScanController(this.size);
+
   @override
   void onInit() {
     super.onInit();
@@ -25,6 +31,7 @@ class ScanController extends GetxController {
   @override
   void dispose() {
     super.dispose();
+    controller.stopImageStream();
     controller.dispose();
   }
 
@@ -56,12 +63,7 @@ class ScanController extends GetxController {
     Tflite.close();
     await Tflite.loadModel(
       model: "assets/yolov2_tiny.tflite",
-      //ssd_mobilenet.tflite, mobilenet_v1.tflite, posenet_mv1_checkpoints.tflite
       labels: "assets/yolov2_tiny.txt",
-      //ssd_mobilenet.txt, mobilenet_v1.txt
-      //numThreads: 1, // defaults to 1
-      //isAsset: true, // defaults: true, set to false to load resources outside assets
-      //useGpuDelegate: false // defaults: false, use GPU delegate
     );
   }
 
@@ -83,31 +85,21 @@ class ScanController extends GetxController {
       var showSquare = detectedObject["confidenceInClass"] * 100 > 1;
 
       if (showSquare) {
-        debugLabel = detectedObject["detectedClass"];
+        debugLabel =
+            """${detectedObject["detectedClass"]} ${cutDecimals(detectedObject["confidenceInClass"] * 100)}""";
 
-        label = """
-                        
-
-h: 0,${cutDecimals(detectedObject["rect"]["h"] * 1000)} 
-w: 0,${cutDecimals(detectedObject["rect"]["w"] * 1000)} 
-x: 0,${cutDecimals(detectedObject["rect"]["x"] * 1000)} 
-y: 0,${cutDecimals(detectedObject["rect"]["y"] * 1000)} 
-
-
-width: ${image.width}
-height: ${image.height}
-        """;
-        h = 400.0; // todo irgendwas stimmt mit den werten nicht
-        w = 200.0; // todo irgendwas stimmt mit den werten nicht
-        x = 0.0; // todo irgendwas stimmt mit den werten nicht
-        y = 0.0; // todo irgendwas stimmt mit den werten nicht
+        label = """""";
+        h = detectedObject["rect"]["h"] * size.height;
+        w = detectedObject["rect"]["w"] * size.width;
+        x = detectedObject["rect"]["x"] * size.width;
+        y = detectedObject["rect"]["y"] * size.height;
       }
       isObjectFound(showSquare);
     }
   }
 
   cutDecimals(double d) {
-    return d.toInt();
+    return d.toStringAsPrecision(3);
   }
 
   @Deprecated("Replaced by runModelOnFrame()")
