@@ -87,7 +87,7 @@ class ScanController extends GetxController {
       if (showSquare) {
         debugLabel = detectedObjects
             .map((detectedObject) =>
-                """${detectedObject["detectedClass"]} ${cutDecimals(detectedObject["confidenceInClass"] * 100)}""")
+        """${detectedObject["detectedClass"]} ${cutDecimals(detectedObject["confidenceInClass"] * 100)}""")
             .toList();
 
         label = """""";

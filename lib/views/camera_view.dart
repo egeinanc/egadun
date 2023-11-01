@@ -16,43 +16,43 @@ class CameraView extends StatelessWidget {
           builder: (controller) {
             return controller.isCameraInit.value
                 ? Stack(
+              children: [
+                CameraPreview(controller.controller),
+                if (controller.isObjectFound.value)
+                  Stack(
                     children: [
-                      CameraPreview(controller.controller),
-                      if (controller.isObjectFound.value)
-                        Stack(
-                          children: [
-                            Positioned(
-                                bottom: 0,
-                                child: Container(
+                      Positioned(
+                          bottom: 0,
+                          child: Container(
+                            color: Colors.white,
+                            child: Column(
+                                children: controller.debugLabel
+                                    .map((e) => Text(e))
+                                    .toList()),
+                          )),
+                      Positioned(
+                        width: controller.w,
+                        height: controller.h,
+                        top: controller.y,
+                        left: controller.x,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.green, width: 4.0)),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
                                   color: Colors.white,
-                                  child: Column(
-                                      children: controller.debugLabel
-                                          .map((e) => Text(e))
-                                          .toList()),
-                                )),
-                            Positioned(
-                              width: controller.w,
-                              height: controller.h,
-                              top: controller.y,
-                              left: controller.x,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.green, width: 4.0)),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                        color: Colors.white,
-                                        child: Text(controller.label)),
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        )
+                                  child: Text(controller.label)),
+                            ],
+                          ),
+                        ),
+                      )
                     ],
                   )
+              ],
+            )
                 : const Center(child: Text("Loading..."));
           }),
     );
