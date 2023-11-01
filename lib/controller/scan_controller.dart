@@ -15,7 +15,7 @@ class ScanController extends GetxController {
 
   var x, y, w, h = 0.0;
   var label = "";
-  var debugLabel = "";
+  List<String> debugLabel = [];
 
   late Size size;
 
@@ -76,7 +76,7 @@ class ScanController extends GetxController {
         model: "YOLO",
         imageHeight: image.height,
         imageWidth: image.width,
-        numResultsPerClass: 1,
+        numResultsPerClass: 10,
         threshold: 0.4);
 
     if (detectedObjects!.isNotEmpty) {
@@ -85,8 +85,10 @@ class ScanController extends GetxController {
       var showSquare = detectedObject["confidenceInClass"] * 100 > 1;
 
       if (showSquare) {
-        debugLabel =
-            """${detectedObject["detectedClass"]} ${cutDecimals(detectedObject["confidenceInClass"] * 100)}""";
+        debugLabel = detectedObjects
+            .map((detectedObject) =>
+                """${detectedObject["detectedClass"]} ${cutDecimals(detectedObject["confidenceInClass"] * 100)}""")
+            .toList();
 
         label = """""";
         h = detectedObject["rect"]["h"] * size.height;
