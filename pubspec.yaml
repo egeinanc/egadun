@@ -38,7 +38,7 @@ dependencies:
   camera: ^0.10.5+5
   http: ^1.2.0
   get: ^4.6.6
-  permission_handler: ^11.2.1
+  permission_handler: ^11.3.0
   flutter_tflite: ^1.0.1
   image: ^3.3.0
 
