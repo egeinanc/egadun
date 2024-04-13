@@ -1,0 +1,18 @@
+version: 2
+
+registries:
+  bshgroup:
+    type: npm-registry
+    url: https://npm.pkg.github.com
+    token: ${{ secrets.ACTIONS_PAT }}
+
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/' # Location of package manifests
+    registries:
+      - bshgroup
+    schedule:
+      interval: 'daily'
+      time: '00:00'
+    open-pull-requests-limit: 15
+
