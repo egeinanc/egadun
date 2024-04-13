@@ -2,8 +2,12 @@ on:
   push:
     branches:
       - erdipage
-jobs:
 
+permissions:
+  pages: write
+  id-token: write
+
+jobs:
   build-static-artifact:
     runs-on: ubuntu-latest
     name: Build and Deploy Job docker image to github
